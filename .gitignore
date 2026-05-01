@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -141,3 +142,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+=======
+node_modules
+.pnpm-store
+dist
+coverage
+.turbo
+.cache
+.DS_Store
+Thumbs.db
+>>>>>>> 747e38e (feat: init)

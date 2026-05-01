@@ -1,0 +1,18 @@
+{
+  "name": "@workspace/node-cli-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A minimal Node.js CLI agent based on the agent loop pattern.",
+  "bin": {
+    "node-agent": "./src/cli.js"
+  },
+  "scripts": {
+    "dev": "node ./src/cli.js",
+    "start": "node ./src/cli.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

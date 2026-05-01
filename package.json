@@ -1,0 +1,14 @@
+{
+  "name": "ai-projects-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "clean": "pnpm -r exec rimraf dist"
+  },
+  "dependencies": {
+    "ai-projects-workspace": "file:"
+  }
+}
