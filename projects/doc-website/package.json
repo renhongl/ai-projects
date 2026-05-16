@@ -4,9 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "docs:sync": "node scripts/sync-learning.mjs",
-    "docs:dev": "node scripts/sync-learning.mjs && vitepress dev docs",
-    "docs:build": "node scripts/sync-learning.mjs && vitepress build docs",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {

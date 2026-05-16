@@ -1,4 +1,5 @@
 packages:
   - "projects/*"
+  - "projects/*/*"
   - "packages/*"
   - "tooling/*"

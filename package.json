@@ -5,8 +5,16 @@
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "lint": "pnpm -r lint",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "clean": "pnpm -r exec rimraf dist"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.0.0"
   },
   "dependencies": {
     "ai-projects-workspace": "file:"
