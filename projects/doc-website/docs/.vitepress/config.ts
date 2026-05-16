@@ -5,18 +5,47 @@ const isUserSite = repository.endsWith(".github.io");
 const base = repository && !isUserSite ? `/${repository}/` : "/";
 
 export default defineConfig({
-  title: "Doc Website",
+  title: "Docs",
   description: "VitePress site for repository docs",
   lang: "zh-CN",
   base,
   cleanUrls: true,
   lastUpdated: true,
   themeConfig: {
-    siteTitle: "Doc Website",
+    siteTitle: "Docs",
     nav: [
       { text: "Home", link: "/" },
-      { text: "Engineering", link: "/engineering/" },
-      { text: "English", link: "/english/" },
+      {
+        text: "Front End",
+        items: [
+          {
+            text: "Plan",
+            link: "/plan/00-font-end-plan",
+          },
+          {
+            text: "Engineering",
+            link: "/engineering/",
+          },
+        ],
+      },
+      {
+        text: "AI",
+        items: [
+          {
+            text: "Agent",
+            link: "/ai/01-agent",
+          },
+        ],
+      },
+      {
+        text: "TED",
+        items: [
+          {
+            text: "The Brain-Changing Benefits of Exercise",
+            link: "/english/01-exercise-changes-brain",
+          },
+        ],
+      },
     ],
     sidebar: {
       "/engineering/": [
@@ -43,7 +72,7 @@ export default defineConfig({
               text: "06 Asset Optimization",
               link: "/engineering/06-asset-optimization",
             },
-            { text: "07 ESLint", link: "/engineering/07-eslint" },
+            { text: "07 ESLint √", link: "/engineering/07-eslint" },
             { text: "08 Prettier", link: "/engineering/08-prettier" },
             { text: "09 Husky", link: "/engineering/09-husky" },
             { text: "10 lint-staged", link: "/engineering/10-lint-staged" },
@@ -56,19 +85,6 @@ export default defineConfig({
             {
               text: "17 Team Governance",
               link: "/engineering/17-team-governance",
-            },
-          ],
-        },
-      ],
-      "/english/": [
-        {
-          text: "English",
-          items: [
-            { text: "Index", link: "/english/" },
-            { text: "00 Study Index", link: "/english/00-index" },
-            {
-              text: "01 Exercise Changes the Brain",
-              link: "/english/01-exercise-changes-brain",
             },
           ],
         },

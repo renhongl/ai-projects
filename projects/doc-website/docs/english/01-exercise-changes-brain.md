@@ -45,4 +45,32 @@
 
 
 ## English
+What if I told you there was something that you can do right now that would have an immediate, positive benefit for your brain including your mood and your focus? And what if I told you that same thing could actually last a long time and protect your brain from different conditions like depression, Alzheimer’s disease or dementia. Would you do it? Yes!
 
+I am talking about the powerful effects of physical activity. Simply moving your body, has immediate, long-lasting and protective benefits for your brain. And that can last for the rest of your life.
+
+So what I want to do today is tell you a story about how I used my deep understanding of neuroscience, as a professor of neuroscience, to essentially do an experiment on myself in which I discovered the science underlying why exercise is the most transformative thing that you can do for your brain today.
+
+Now, as a neuroscientist, I know that our brains, that is the thing in our head right now, that is the most complex structure known to humankind. But it’s one thing to talk about the brain, and it’s another to see it.
+
+So here is a real preserved human brain. And it’s going to illustrate two key areas that we are going to talk about today. The first is the prefrontal cortex, right behind your forehead, critical for things like decision-making, focus, attention and your personality.
+
+The second key area is located in the temporal lobe, shown right here. You have two temporal lobes in your brain, the right and the left, and deep in the temporal lobe is a key structure critical for your ability to form and retain new long-term memories for facts and events. And that structure is called the hippocampus. So I’ve always been fascinated with the hippocampus.
+
+How could it be that an event that lasts just a moment, say, your first kiss, or the moment your first child was born, can form a memory that has changed your brain, that lasts an entire lifetime? That’s what I want to understand. I wanted to start and record the activity of individual brain cells in the hippocampus as subjects were forming new memories. And essentially try and decode how those brief bursts of electrical activity, which is how neurons communicate with each other, how those brief bursts either allowed us to form a new memory, or did not.
+
+But a few years ago, I did something very unusual in science. As a full professor of neural science, I decided to completely switch my research program. Because I encountered something that was so amazing, with the potential to change so many lives that I had to study it. I discovered and I experienced the brain-changing effects of exercise.
+
+And I did it in a completely inadvertent way. I was actually at the height of all the memory work that I was doing — data was pouring in, I was becoming known in my field for all of this memory work. And it should have been going great. It was, scientifically. But when I stuck my head out of my lab door, I noticed something. I had no social life. I spent too much time listening to those brain cells in a dark room, by myself. (Laughter)
+
+I didn’t move my body at all. I had gained 25 pounds. And actually, it took me many years to realize it, I was actually miserable. And I shouldn’t be miserable. And I went on a river-rafting trip — by myself, because I had no social life. And I came back — thinking, “Oh, my God, I was the weakest person on that trip.”
+
+And I came back with a mission. I said, “I’m never going to feel like the weakest person on a river-rafting trip again.” And that’s what made me go to the gym. And I focused my type-A personality on going to all the exercise classes at the gym. I tried everything. I went to kickbox, dance, yoga, step class, and at first it was really hard. But what I noticed is that after every sweat-inducing workout that I tried, I had this great mood boost and this great energy boost. And that’s what kept me going back to the gym. Well, I started feeling stronger. I started feeling better, I even lost that 25 pounds.
+
+And now, fast-forward a year and a half into this regular exercise program and I noticed something that really made me sit up and take notice. I was sitting at my desk, writing a research grant, and a thought went through my mind that had never gone through my mind before.
+
+And that thought was, “Gee, grant-writing is going well today.” And all the scientists — yeah, all the scientists always laugh when I say that, because grant-writing never goes well. It is so hard; you’re always pulling your hair out, trying to come up with that million-dollar-winning idea. But I realized that the grant-writing was going well, because I was able to focus and maintain my attention for longer than I had before. And my long-term memory — what I was studying in my own lab — seemed to be better in me. And that’s when I put it together.
+
+Maybe all that exercise that I had included and added to my life was changing my brain. Maybe I did an experiment on myself without even knowing it. So as a curious neuroscientist, I went to the literature to see what I could find about what we knew about the effects of exercise on the brain.
+
+And what I found was an exciting and a growing literature that was essentially showing everything that I noticed in myself.
