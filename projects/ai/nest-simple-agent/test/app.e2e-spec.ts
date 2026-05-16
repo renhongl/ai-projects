@@ -1,6 +1,6 @@
-import { INestApplication } from '@nestjs/common';
+import type { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { AgentService } from '../src/agent/agent.service';
 
@@ -36,7 +36,7 @@ describe('AppController (e2e)', () => {
     await request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect(({ body }) => {
+      .expect(({ body }: { body: { status: string } }) => {
         expect(body.status).toBe('ok');
       });
   });
@@ -46,7 +46,7 @@ describe('AppController (e2e)', () => {
       .post('/agent/chat')
       .send({ message: 'hello agent' })
       .expect(201)
-      .expect(({ body }) => {
+      .expect(({ body }: { body: { model: string; message: string } }) => {
         expect(agentServiceMock.reply).toHaveBeenCalled();
         expect(body.model).toBe('gpt-5-mini');
         expect(body.message).toContain('mocked agent');

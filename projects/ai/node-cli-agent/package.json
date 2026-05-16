@@ -8,9 +8,14 @@
     "node-agent": "./src/cli.js"
   },
   "scripts": {
+    "build": "node --check ./src/cli.js",
     "dev": "node ./src/cli.js",
+    "lint": "eslint src test --ext .js",
     "start": "node ./src/cli.js",
     "test": "node --test"
+  },
+  "dependencies": {
+    "@workspace/shared-utils": "workspace:*"
   },
   "engines": {
     "node": ">=20"

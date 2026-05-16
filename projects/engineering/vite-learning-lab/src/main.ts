@@ -25,19 +25,20 @@ app.innerHTML = `
         <p class="eyebrow">Engineering Learning</p>
         <h1>${import.meta.env.VITE_APP_TITLE}</h1>
         <p class="lead">
-          这个项目用最少依赖演示 Vite 的核心能力：开发服务器、环境变量、别名、静态资源、
-          public 目录、动态导入与构建输出。
+          This lab keeps the dependency surface small and focuses on core Vite concepts:
+          dev server, env variables, path aliases, static assets, the public directory,
+          dynamic import, and production build output.
         </p>
         <div class="actions">
-          <button id="load-feature" class="primary-button">加载动态模块</button>
+          <button id="load-feature" class="primary-button">Load Lazy Feature</button>
           <a class="secondary-link" href="/robots.txt" target="_blank" rel="noreferrer">
-            查看 public/robots.txt
+            Open public/robots.txt
           </a>
         </div>
       </div>
       <div class="hero-panel">
         <img class="hero-logo" src="${viteMarkUrl}" alt="Vite logo" />
-        <h2>当前环境</h2>
+        <h2>Current Environment</h2>
         <ul class="env-list">${envSummary}</ul>
       </div>
     </section>
@@ -45,15 +46,15 @@ app.innerHTML = `
     <section class="notes">
       <article>
         <h3>src/assets</h3>
-        <p>这里的资源会被 Vite 识别、处理并参与构建。</p>
+        <p>Assets in this folder are processed by Vite and participate in the build pipeline.</p>
       </article>
       <article>
-        <h3>路径别名</h3>
-        <p>项目使用 <code>@</code> 指向 <code>src</code>，减少相对路径层级。</p>
+        <h3>Alias</h3>
+        <p>The project uses <code>@</code> as an alias to <code>src</code> to keep imports shallow.</p>
       </article>
       <article>
-        <h3>代理配置</h3>
-        <p>开发环境可将 <code>/api</code> 转发到本地后端，避免前端直连跨域。</p>
+        <h3>Proxy</h3>
+        <p>During development, requests under <code>/api</code> can be forwarded to a local backend.</p>
       </article>
     </section>
 
@@ -64,13 +65,15 @@ app.innerHTML = `
 const loadButton = document.querySelector<HTMLButtonElement>('#load-feature');
 const lazySlot = document.querySelector<HTMLElement>('#lazy-slot');
 
-loadButton?.addEventListener('click', async () => {
-  if (!lazySlot) {
-    return;
-  }
+loadButton?.addEventListener('click', () => {
+  void (async () => {
+    if (!lazySlot) {
+      return;
+    }
 
-  const { createLazyFeatureCard } = await import('@/modules/feature');
-  lazySlot.replaceChildren(createLazyFeatureCard());
-  loadButton.disabled = true;
-  loadButton.textContent = '动态模块已加载';
+    const { createLazyFeatureCard } = await import('@/modules/feature');
+    lazySlot.replaceChildren(createLazyFeatureCard());
+    loadButton.disabled = true;
+    loadButton.textContent = 'Lazy Feature Loaded';
+  })();
 });

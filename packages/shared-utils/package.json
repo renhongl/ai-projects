@@ -1,0 +1,14 @@
+{
+  "name": "@workspace/shared-utils",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "build": "node --check ./index.js",
+    "lint": "eslint index.js",
+    "test": "node --check ./index.js"
+  }
+}

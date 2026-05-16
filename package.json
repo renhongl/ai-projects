@@ -1,13 +1,23 @@
 {
   "name": "ai-projects-workspace",
   "private": true,
+  "packageManager": "pnpm@9.0.6",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
   "scripts": {
-    "dev": "pnpm -r --parallel dev",
-    "build": "pnpm -r build",
-    "test": "pnpm -r test",
-    "lint": "eslint .",
+    "dev": "pnpm -r --parallel --if-present dev",
+    "build": "pnpm -r --if-present build",
+    "test": "pnpm -r --if-present test",
+    "lint": "pnpm -r --if-present lint && eslint .",
     "lint:fix": "eslint . --fix",
-    "clean": "pnpm -r exec rimraf dist"
+    "typecheck": "pnpm -r --if-present typecheck",
+    "docs:dev": "pnpm --filter doc-website docs:dev",
+    "docs:build": "pnpm --filter doc-website docs:build",
+    "docs:preview": "pnpm --filter doc-website docs:preview",
+    "workspace:doctor": "pnpm --filter @workspace/workspace-doctor run doctor",
+    "clean": "pnpm -r --if-present exec node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\""
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
@@ -15,8 +25,5 @@
     "globals": "^15.0.0",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.0.0"
-  },
-  "dependencies": {
-    "ai-projects-workspace": "file:"
   }
 }

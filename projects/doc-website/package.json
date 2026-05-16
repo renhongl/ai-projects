@@ -4,6 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "dev": "pnpm docs:dev",
+    "build": "pnpm docs:build",
+    "lint": "eslint docs/.vitepress/config.ts --ext .ts",
+    "test": "pnpm docs:build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"

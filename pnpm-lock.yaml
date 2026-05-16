@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      ai-projects-workspace:
-        specifier: 'file:'
-        version: 'file:'
     devDependencies:
       '@eslint/js':
         specifier: ^9.0.0
@@ -28,6 +24,31 @@ importers:
         specifier: ^8.0.0
         version: 8.59.3(eslint@9.39.4)(typescript@5.9.3)
 
+  packages/eslint-config:
+    dependencies:
+      '@eslint/js':
+        specifier: ^9.0.0
+        version: 9.39.4
+      globals:
+        specifier: ^15.0.0
+        version: 15.15.0
+      typescript-eslint:
+        specifier: ^8.0.0
+        version: 8.59.3(eslint@9.39.4)(typescript@5.9.3)
+
+  packages/node-sdk:
+    dependencies:
+      '@workspace/shared-utils':
+        specifier: workspace:*
+        version: link:../shared-utils
+      openai:
+        specifier: ^6.0.0
+        version: 6.38.0
+
+  packages/shared-utils: {}
+
+  packages/tsconfig: {}
+
   projects/ai/nest-simple-agent:
     dependencies:
       '@nestjs/common':
@@ -39,6 +60,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^11.0.0
         version: 11.1.21(@nestjs/common@11.1.21(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.21)
+      '@workspace/node-sdk':
+        specifier: workspace:*
+        version: link:../../../packages/node-sdk
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -48,9 +72,6 @@ importers:
       dotenv:
         specifier: ^16.6.1
         version: 16.6.1
-      openai:
-        specifier: ^6.0.0
-        version: 6.38.0
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -76,6 +97,12 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.17
+      '@types/supertest':
+        specifier: ^6.0.3
+        version: 6.0.3
+      '@workspace/tsconfig':
+        specifier: workspace:*
+        version: link:../../../packages/tsconfig
       eslint:
         specifier: ^9.0.0
         version: 9.39.4
@@ -107,7 +134,11 @@ importers:
         specifier: ^5.6.3
         version: 5.9.3
 
-  projects/ai/node-cli-agent: {}
+  projects/ai/node-cli-agent:
+    dependencies:
+      '@workspace/shared-utils':
+        specifier: workspace:*
+        version: link:../../../packages/shared-utils
 
   projects/doc-website:
     devDependencies:
@@ -117,12 +148,17 @@ importers:
 
   projects/engineering/vite-learning-lab:
     devDependencies:
+      '@workspace/tsconfig':
+        specifier: workspace:*
+        version: link:../../../packages/tsconfig
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
       vite:
         specifier: ^5.4.10
         version: 5.4.21(@types/node@22.19.17)(terser@5.46.1)
+
+  tooling/workspace-doctor: {}
 
 packages:
 
@@ -1186,6 +1222,9 @@ packages:
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
+  '@types/cookiejar@2.1.5':
+    resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
+
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
 
@@ -1234,6 +1273,9 @@ packages:
   '@types/mdurl@2.0.0':
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==}
 
+  '@types/methods@1.1.4':
+    resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
+
   '@types/node@22.19.17':
     resolution: {integrity: sha512-wGdMcf+vPYM6jikpS/qhg6WiqSV/OhG+jeeHT/KlVqxYfD40iYJf9/AE1uQxVWFvU7MipKRkRv8NSHiCGgPr8Q==}
 
@@ -1251,6 +1293,12 @@ packages:
 
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
+
+  '@types/superagent@8.1.9':
+    resolution: {integrity: sha512-pTVjI73witn+9ILmoJdajHGW2jkSaOzhiFYF1Rd3EQ94kymLqB9PjD9ISg7WaALC7+dCHT0FGe9T2LktLq/3GQ==}
+
+  '@types/supertest@6.0.3':
+    resolution: {integrity: sha512-8WzXq62EXFhJ7QsH3Ocb/iKQ/Ty9ZVWnVzoTKc9tyyFRRF3a74Tk2+TLFgaFFw364Ere+npzHKEJ6ga2LzIL7w==}
 
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
@@ -1594,9 +1642,6 @@ packages:
     resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-
-  'ai-projects-workspace@file:':
-    resolution: {directory: '', type: directory}
 
   ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
@@ -4936,6 +4981,8 @@ snapshots:
     dependencies:
       '@types/node': 22.19.17
 
+  '@types/cookiejar@2.1.5': {}
+
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 9.6.1
@@ -4997,6 +5044,8 @@ snapshots:
 
   '@types/mdurl@2.0.0': {}
 
+  '@types/methods@1.1.4': {}
+
   '@types/node@22.19.17':
     dependencies:
       undici-types: 6.21.0
@@ -5015,6 +5064,18 @@ snapshots:
       '@types/node': 22.19.17
 
   '@types/stack-utils@2.0.3': {}
+
+  '@types/superagent@8.1.9':
+    dependencies:
+      '@types/cookiejar': 2.1.5
+      '@types/methods': 1.1.4
+      '@types/node': 22.19.17
+      form-data: 4.0.5
+
+  '@types/supertest@6.0.3':
+    dependencies:
+      '@types/methods': 1.1.4
+      '@types/superagent': 8.1.9
 
   '@types/unist@3.0.3': {}
 
@@ -5382,8 +5443,6 @@ snapshots:
       acorn: 8.16.0
 
   acorn@8.16.0: {}
-
-  'ai-projects-workspace@file:': {}
 
   ajv-formats@2.1.1(ajv@8.20.0):
     optionalDependencies:

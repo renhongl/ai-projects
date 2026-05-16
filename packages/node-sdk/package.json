@@ -1,0 +1,22 @@
+{
+  "name": "@workspace/node-sdk",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "scripts": {
+    "build": "node --check ./index.js",
+    "lint": "eslint index.js",
+    "test": "node --check ./index.js"
+  },
+  "dependencies": {
+    "@workspace/shared-utils": "workspace:*",
+    "openai": "^6.0.0"
+  }
+}

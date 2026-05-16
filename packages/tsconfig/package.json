@@ -1,0 +1,17 @@
+{
+  "name": "@workspace/tsconfig",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./base.json": "./base.json",
+    "./nest-service.json": "./nest-service.json",
+    "./vite-app.json": "./vite-app.json",
+    ".": "./index.js"
+  },
+  "scripts": {
+    "build": "node --check ./index.js",
+    "lint": "eslint index.js",
+    "test": "node --check ./index.js"
+  }
+}

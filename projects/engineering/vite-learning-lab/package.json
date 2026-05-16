@@ -8,9 +8,12 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "pnpm build",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@workspace/tsconfig": "workspace:*",
     "typescript": "^5.6.3",
     "vite": "^5.4.10"
   }

@@ -1,0 +1,12 @@
+{
+  "name": "@workspace/workspace-doctor",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "node --check ./index.js",
+    "doctor": "node ./index.js",
+    "lint": "eslint index.js",
+    "test": "node --check ./index.js"
+  }
+}
