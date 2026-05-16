@@ -1,4 +1,4 @@
-import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -62,19 +62,13 @@ function transformContent(filename, content) {
   }
 
   return content
-    .replace(/\[([^\]]+)\]\(\/D:\/FE\/ai-projects\/projects\/vite-learning-lab\/([^)]+)\)/g, '`projects/vite-learning-lab/$2`')
-    .replace(/\[([^\]]+)\]\(<\/D:\/FE\/ai-projects\/projects\/vite-learning-lab\/([^)]+)>\)/g, '`projects/vite-learning-lab/$2`');
+    .replace(/\[[^\]]+\]\(<*\/D:\/FE\/ai-projects\/projects\/vite-learning-lab\/([^)>:]+)(?::\d+)?>\)/g, '`projects/vite-learning-lab/$1`')
+    .replace(/\[[^\]]+\]\(\/D:\/FE\/ai-projects\/projects\/vite-learning-lab\/([^)#:]+)(?::\d+)?\)/g, '`projects/vite-learning-lab/$1`');
 }
 
 async function ensureCleanMarkdownDir(dir) {
+  await rm(dir, { recursive: true, force: true });
   await mkdir(dir, { recursive: true });
-  const entries = await readdir(dir, { withFileTypes: true });
-
-  await Promise.all(
-    entries
-      .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
-      .map((entry) => rm(path.join(dir, entry.name), { force: true }))
-  );
 }
 
 function buildSectionIndex(section) {
