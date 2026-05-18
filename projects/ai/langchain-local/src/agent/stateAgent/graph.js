@@ -4,6 +4,7 @@ import { llm } from "../../utils/llm.js";
 
 import { weatherTool, calculatorTool } from "../../tools/index.js";
 import { AgentState } from "./state.js";
+import { updateMemory } from "./memory.js";
 
 async function llmNode(state) {
   const llmWithTools = llm.bindTools([weatherTool, calculatorTool]);
@@ -14,15 +15,30 @@ async function llmNode(state) {
 }
 
 async function streamLlmNode(state) {
+  if (!state.memory) {
+    state.memory = {};
+  }
+  const newMemory = updateMemory(state.memory, state.messages);
+  const memoryText = `
+  用户信息：
+  - 姓名：${newMemory.userName || "未知"}
+  - 位置：${newMemory.location || "未知"}
+  `;
+  const messages = [
+    {
+      role: "system",
+      content: `
+        你是一个带记忆的助手。
+        ${memoryText}
+      `,
+    },
+    ...state.messages,
+  ];
   const llmWithTools = llm.bindTools([weatherTool, calculatorTool]);
-  const stream = await llmWithTools.stream(state.messages);
+  const stream = await llmWithTools.stream(messages);
   let finalMessage;
   for await (const chunk of stream) {
-    const text = chunk.content || "";
-    for (const char of text) {
-      process.stdout.write(char);
-      await new Promise((r) => setTimeout(r, 10));
-    }
+    process.stdout.write(chunk.content || "");
     if (!finalMessage) {
       finalMessage = chunk;
     } else {
@@ -33,7 +49,8 @@ async function streamLlmNode(state) {
   console.log("\n");
 
   return {
-    messages: [finalMessage],
+    messages: [...state.messages, finalMessage],
+    memory: newMemory,
   };
 }
 
@@ -58,8 +75,11 @@ async function toolNode(state) {
       tool_call_id: call.id,
     });
   }
+  const newMemory = updateMemory(state.memory, state.messages);
+
   return {
     messages: [...state.messages, ...results],
+    memory: newMemory,
   };
 }
 
