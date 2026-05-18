@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 
 const repository = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "";
 const isUserSite = repository.endsWith(".github.io");
-const base = repository && !isUserSite ? `/${repository}/` : "/";
+const base = repository && !isUserSite ? `/ai-projects/` : "/";
 
 export default defineConfig({
   title: "Docs",
@@ -10,7 +10,6 @@ export default defineConfig({
   lang: "zh-CN",
   base,
   cleanUrls: true,
-  srcDir: "../",
   lastUpdated: true,
   themeConfig: {
     siteTitle: "Docs",
