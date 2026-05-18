@@ -7,4 +7,5 @@ export const llm = new ChatOpenAICompletions({
     baseURL: "http://localhost:1234/v1",
   },
   apiKey: "lm-studio",
+  streaming: true,
 });

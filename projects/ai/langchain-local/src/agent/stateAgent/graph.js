@@ -13,6 +13,30 @@ async function llmNode(state) {
   };
 }
 
+async function streamLlmNode(state) {
+  const llmWithTools = llm.bindTools([weatherTool, calculatorTool]);
+  const stream = await llmWithTools.stream(state.messages);
+  let finalMessage;
+  for await (const chunk of stream) {
+    const text = chunk.content || "";
+    for (const char of text) {
+      process.stdout.write(char);
+      await new Promise((r) => setTimeout(r, 10));
+    }
+    if (!finalMessage) {
+      finalMessage = chunk;
+    } else {
+      finalMessage = finalMessage.concat(chunk);
+    }
+  }
+
+  console.log("\n");
+
+  return {
+    messages: [finalMessage],
+  };
+}
+
 const tools = {
   get_weather: weatherTool,
   calculator: calculatorTool,
@@ -23,9 +47,11 @@ async function toolNode(state) {
   const toolCalls = lastMessage.tool_calls || [];
   const results = [];
   for (const call of toolCalls) {
+    console.log(`\n🔧 调用工具: ${call.name}`);
     const tool = tools[call.name];
     if (!tool) continue;
     const result = await tool.invoke(call.args);
+    console.log("📦 Tool结果:", result);
     results.push({
       role: "tool",
       content: result,
@@ -50,7 +76,7 @@ const graph = new StateGraph({
   channels: AgentState,
 });
 
-graph.addNode("llm", llmNode);
+graph.addNode("llm", streamLlmNode);
 graph.addNode("tool", toolNode);
 
 graph.setEntryPoint("llm");
