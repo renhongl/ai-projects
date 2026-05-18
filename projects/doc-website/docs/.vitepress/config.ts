@@ -10,6 +10,7 @@ export default defineConfig({
   lang: "zh-CN",
   base,
   cleanUrls: true,
+  srcDir: "../",
   lastUpdated: true,
   themeConfig: {
     siteTitle: "Docs",
