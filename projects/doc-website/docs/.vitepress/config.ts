@@ -35,6 +35,10 @@ export default defineConfig({
             text: "Agent",
             link: "/ai/01-agent",
           },
+          {
+            text: "Langchain",
+            link: "/ai/02-langchain",
+          },
         ],
       },
       {
@@ -92,13 +96,19 @@ export default defineConfig({
       "/plan/": [
         {
           text: "Plan",
-          items: [{ text: "00 Front End Plan", link: "/plan/00-font-end-plan" }],
+          items: [
+            { text: "00 Front End Plan", link: "/plan/00-font-end-plan" },
+          ],
         },
       ],
       "/ai/": [
         {
-          text: "AI",
-          items: [{ text: "01 Agent", link: "/ai/01-agent" }],
+          text: "Agent",
+          link: "/ai/01-agent",
+        },
+        {
+          text: "LangChain",
+          link: "/ai/02-langchain",
         },
       ],
       "/english/": [

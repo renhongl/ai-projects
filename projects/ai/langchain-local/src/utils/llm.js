@@ -1,6 +1,6 @@
 import { ChatOpenAICompletions } from "@langchain/openai";
 
-export const model = new ChatOpenAICompletions({
+export const llm = new ChatOpenAICompletions({
   model: "lmstudio-model",
   temperature: 0,
   configuration: {
