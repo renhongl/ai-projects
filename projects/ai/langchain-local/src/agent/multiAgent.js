@@ -5,7 +5,7 @@ import { llm } from "../utils/llm.js";
 import { weatherTool } from "../tools/weatherTool.js";
 import { calculatorTool } from "../tools/calculatorTool.js";
 
-export const agent = await createReactAgent({
+export const multiAgent = await createReactAgent({
   llm,
   tools: [weatherTool, calculatorTool],
   systemMessage: `

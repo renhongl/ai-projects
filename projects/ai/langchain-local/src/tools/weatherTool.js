@@ -18,13 +18,12 @@ export const weatherTool = tool(
     const weatherData = await weatherRes.json();
     const current = weatherData.current;
 
-    return {
-      city: place.name,
-      temperature: current.temperature_2m,
-      humidity: current.relative_humidity_2m,
-      wind_speed: current.wind_speed_10m,
-      weather_code: current.weather_code,
-    };
+    return `${place.name}天气：
+    - temperature: ${current.temperature_2m}
+    - humidity: ${current.relative_humidity_2m}
+    - wind_speed: ${current.wind_speed_10m}
+    - weather_code: ${current.weather_code}
+    `;
   },
   {
     name: "get_weather",

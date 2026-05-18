@@ -29,3 +29,36 @@ export function ask(agent) {
     ask(agent); // 继续循环输入
   });
 }
+
+const state = {
+  messages: [],
+};
+export function stateAsk(agent) {
+  rl.question("请输入问题：", async (input) => {
+    if (input === "exit") {
+      rl.close();
+      return;
+    }
+    state.messages.push({
+      role: "user",
+      content: input,
+    });
+
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content: input,
+        },
+      ],
+    });
+
+    const lastMessage = result.messages?.[result.messages.length - 1];
+
+    state.messages = result.messages;
+
+    console.log("\n🤖 AI:", lastMessage?.content ?? result, "\n");
+
+    stateAsk(agent); // 继续循环输入
+  });
+}
