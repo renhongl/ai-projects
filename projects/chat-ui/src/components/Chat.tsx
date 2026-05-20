@@ -1,38 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import useStore from "../store";
 
 const ChatComponent: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const messages = useStore((state) => state.messages);
   const addMessage = useStore((state) => state.addMessage);
+  const updateLastMessage = useStore((state) => state.updateLastMessage);
+  // ↑建议你在 store 里加这个方法
 
-  async function handleUserInput(input: string) {
-    try {
-      const result = await fetch("http://localhost:3001/api/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: input }),
-      });
-      const json = await result.json();
+  const eventSourceRef = useRef<EventSource | null>(null);
 
-      //   const response = await fetch("http://localhost:3001/api/messages");
-      //   const messages = await response.json();
-      console.log(json);
-      addMessage(json.message[json.message.length - 1].kwargs.content, "Bot");
-      // 处理 messages 并执行其他操作
-    } catch (error) {
-      console.error("Error fetching messages:", error);
+  function handleUserInput(input: string) {
+    // 1. 先写入 user 消息
+    addMessage(input, "user");
+
+    // 2. 先创建一个 bot 占位消息（关键）
+    addMessage("", "Bot");
+
+    // 3. 关闭旧连接
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
     }
+
+    // 4. SSE 连接（注意：GET + query 参数）
+    // const es = new EventSource(`http://localhost:3001/api/messages/stream`);
+    const es = new EventSource(
+      `http://localhost:3001/api/messages/stream?text=${encodeURIComponent(input)}`,
+    );
+
+    eventSourceRef.current = es;
+
+    let fullText = "";
+
+    es.onmessage = (event) => {
+      debugger;
+      if (event.data === "[DONE]") {
+        es.close();
+        return;
+      }
+
+      try {
+        const data = JSON.parse(event.data);
+
+        // 假设后端返回：{ delta: "xxx" }
+        const chunk = data.delta ?? "";
+
+        fullText += chunk;
+        console.log("-----data", fullText);
+
+        // 更新最后一条 Bot 消息
+        updateLastMessage(fullText);
+      } catch (err) {
+        console.error("SSE parse error:", err);
+      }
+    };
+
+    es.onerror = (err) => {
+      console.error("SSE error:", err);
+      es.close();
+    };
   }
 
   const sendMessage = () => {
-    if (inputValue.trim()) {
-      addMessage(inputValue, "user");
-      handleUserInput(inputValue);
-      setInputValue("");
-    }
+    if (!inputValue.trim()) return;
+
+    handleUserInput(inputValue);
+    setInputValue("");
   };
 
   return (
@@ -52,6 +85,7 @@ const ChatComponent: React.FC = () => {
           </div>
         ))}
       </div>
+
       <div
         style={{
           display: "flex",

@@ -1,4 +1,10 @@
-import { plannerAgent, createPlannerAgentInput } from "./agent/index.js";
-import { stateAsk } from "./utils/cli.js";
+import {
+  plannerAgent,
+  createPlannerAgentInput,
+  stateAgent,
+} from "./agent/index.js";
+import { stateCli, plannerCli } from "./utils/cli.js";
 
-stateAsk(plannerAgent, createPlannerAgentInput());
+// plannerCli(plannerAgent, createPlannerAgentInput());
+
+stateCli(stateAgent);
