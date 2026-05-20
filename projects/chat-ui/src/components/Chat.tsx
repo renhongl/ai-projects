@@ -1,6 +1,28 @@
 import React, { useState, useRef } from "react";
 import useStore from "../store";
 
+const commonStyles = {
+  clear: "both",
+  float: "left",
+  padding: "8px 16px",
+  borderRadius: "8px",
+  color: "#fff",
+  maxWidth: "400px",
+  textAlign: "left",
+  marginBottom: "16px",
+  marginTop: "8px",
+};
+
+const botStyles = {
+  ...commonStyles,
+  background: "#2196f3",
+};
+const userStyles = {
+  ...commonStyles,
+  background: "#009688",
+  float: "right",
+};
+
 const ChatComponent: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const messages = useStore((state) => state.messages);
@@ -33,7 +55,6 @@ const ChatComponent: React.FC = () => {
     let fullText = "";
 
     es.onmessage = (event) => {
-      debugger;
       if (event.data === "[DONE]") {
         es.close();
         return;
@@ -72,16 +93,31 @@ const ChatComponent: React.FC = () => {
     <div>
       <div
         style={{
-          height: "calc(100vh - 60px)",
+          height: "calc(100vh - 70px)",
           overflowY: "auto",
           border: "1px solid #ccc",
           padding: "10px",
         }}
       >
         {messages.map((message, index) => (
-          <div key={index} style={{ marginBottom: "5px" }}>
-            <strong>{message.sender === "user" ? "You:" : "Bot:"}</strong>{" "}
-            {message.text}
+          <div
+            key={index}
+            style={
+              message.sender === "user"
+                ? {
+                    ...userStyles,
+                    background: undefined,
+                    color: "#000",
+                  }
+                : { ...botStyles, background: undefined, color: "#000" }
+            }
+          >
+            <div style={message.sender === "user" ? { float: "right" } : {}}>
+              {message.sender === "user" ? "You" : "Bot"}
+            </div>
+            <div style={message.sender === "user" ? userStyles : botStyles}>
+              {message.text}
+            </div>
           </div>
         ))}
       </div>
@@ -99,7 +135,13 @@ const ChatComponent: React.FC = () => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Type a message..."
-          style={{ flex: 1, marginRight: "5px" }}
+          style={{ flex: 1, marginRight: "5px", border: "2px solid #009688" }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+              e.preventDefault(); // 防止表单提交刷新
+              sendMessage();
+            }
+          }}
         />
         <button onClick={sendMessage}>Send</button>
       </div>
