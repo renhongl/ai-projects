@@ -7,6 +7,7 @@ interface ChatState {
 
 const useStore = create<ChatState>((set) => ({
   messages: [],
+  threadId: `chat_session_${Math.random().toString(36).substring(2, 15)}`,
   updateLastMessage: (text: string) =>
     set((state) => {
       const messages = [...state.messages];

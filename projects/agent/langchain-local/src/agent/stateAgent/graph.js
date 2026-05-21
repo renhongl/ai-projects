@@ -1,8 +1,16 @@
 import { StateGraph, END } from "@langchain/langgraph";
 
 import { llm } from "../../utils/llm.js";
+import { MemorySaver } from "@langchain/langgraph";
 
-import { weatherTool, calculatorTool } from "../../tools/index.js";
+const memory = new MemorySaver();
+
+import {
+  weatherTool,
+  calculatorTool,
+  flightSearchTool,
+  cameraControlTool,
+} from "../../tools/index.js";
 import { AgentState } from "./state.js";
 import { updateMemory } from "./memory.js";
 
@@ -32,9 +40,21 @@ async function streamLlmNode(state) {
         ${memoryText}
       `,
     },
+    {
+      role: "system",
+      content: `1. 你在解析tool时，只使用最新一条用户的消息解析，不要对历史消息解析tool，每次最多返回一个tool。\n
+                2. 将摄像头控制的命令相关的历史消息忽略，只有最新的用户消息是摄像头控制才执行对应的tool。\n
+                3. 每次回答只回答最新的问题，或者根据最新的问题调用工具，不要在每个消息里都包含历史消息的信息。更不要每个消息都去执行历史消息对应的工具。
+      `,
+    },
     ...state.messages,
   ];
-  const llmWithTools = llm.bindTools([weatherTool, calculatorTool]);
+  const llmWithTools = llm.bindTools([
+    weatherTool,
+    calculatorTool,
+    flightSearchTool,
+    cameraControlTool,
+  ]);
   const stream = await llmWithTools.stream(messages);
   let finalMessage;
   for await (const chunk of stream) {
@@ -57,6 +77,8 @@ async function streamLlmNode(state) {
 const tools = {
   get_weather: weatherTool,
   calculator: calculatorTool,
+  search_flights: flightSearchTool,
+  control_camera: cameraControlTool,
 };
 
 async function toolNode(state) {
@@ -108,4 +130,6 @@ graph.addConditionalEdges("llm", router, {
 
 graph.addEdge("tool", "llm");
 
-export const stateAgent = graph.compile();
+export const stateAgent = graph.compile({
+  checkpointer: memory,
+});

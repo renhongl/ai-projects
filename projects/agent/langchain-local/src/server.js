@@ -3,7 +3,6 @@ import Router from "@koa/router";
 import { stateAgent } from "./agent/index.js";
 import cors from "@koa/cors";
 import bodyparser from "koa-bodyparser";
-import { PassThrough } from "stream";
 const app = new Koa();
 const router = new Router();
 
@@ -13,11 +12,6 @@ app
   .use(router.allowedMethods())
   .use(bodyparser());
 
-// 获取消息列表
-// router.get("/api/messages", async (ctx) => {
-//   ctx.body = getMessages();
-// });
-
 const state = {
   messages: [],
   memory: {
@@ -26,7 +20,6 @@ const state = {
   },
 };
 
-// 添加消息
 router.post("/api/messages", bodyparser(), async (ctx) => {
   const body = ctx.request.body;
   console.log(body);
@@ -60,16 +53,28 @@ router.get("/api/messages/stream", async (ctx) => {
   });
 
   res.write("\n");
+  const id = Math.random() + "";
+  state.messages.push({
+    role: "system",
+    content: `You are NOT allowed to derive tool_calls from chat history.
+      You may only use tool_calls present in the current model output.`,
+  });
 
   state.messages.push({
+    id,
     role: "user",
     content: ctx.query.text || "test",
   });
+  const threadId = ctx.query.threadId || "default_local_user";
+  console.log("----id", id);
 
   try {
     // ⭐ 关键：必须用 streamEvents（不是 streamValues）
     const stream = await stateAgent.streamEvents(state, {
       version: "v2",
+      configurable: {
+        thread_id: threadId,
+      },
     });
 
     for await (const event of stream) {
