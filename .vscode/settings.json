@@ -1,0 +1,6 @@
+{
+  // 告诉 ESLint 插件自动探测并适配 Monorepo 中的各个子项目
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  // 确保启用 ESLint 的实时校验功能
+  "eslint.enable": true
+}

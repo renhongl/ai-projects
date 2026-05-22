@@ -5,7 +5,7 @@ import tseslint from 'typescript-eslint';
 export function createWorkspaceEslintConfig({
   browserFiles = [],
   nodeFiles = [],
-  typeAwareFiles = []
+  typeAwareFiles = [],
 } = {}) {
   return [
     {
@@ -15,47 +15,50 @@ export function createWorkspaceEslintConfig({
         '**/.vite/**',
         '**/.vitepress/cache/**',
         '**/.vitepress/dist/**',
-        '**/*.d.ts'
-      ]
+        '**/*.d.ts',
+      ],
     },
     {
       files: ['**/*.{js,mjs,cjs}'],
       extends: [js.configs.recommended],
       languageOptions: {
         ecmaVersion: 'latest',
-        sourceType: 'module'
+        sourceType: 'module',
       },
       rules: {
-        'no-console': ['warn', { allow: ['warn', 'error'] }]
-      }
+        'no-console': ['warn', { allow: ['warn'] }],
+      },
     },
     {
       files: ['**/*.{ts,tsx,mts,cts}'],
       extends: [js.configs.recommended, ...tseslint.configs.recommended],
       languageOptions: {
         ecmaVersion: 'latest',
-        sourceType: 'module'
+        sourceType: 'module',
       },
       rules: {
-        'no-console': ['warn', { allow: ['warn', 'error'] }],
+        'no-console': ['warn', { allow: ['warn'] }],
         '@typescript-eslint/consistent-type-imports': 'error',
-        '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }]
-      }
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          { argsIgnorePattern: '^_' },
+        ],
+      },
     },
     browserFiles.length > 0
       ? {
           files: browserFiles,
           languageOptions: {
-            globals: globals.browser
-          }
+            globals: globals.browser,
+          },
         }
       : null,
     nodeFiles.length > 0
       ? {
           files: nodeFiles,
           languageOptions: {
-            globals: globals.node
-          }
+            globals: globals.node,
+          },
         }
       : null,
     typeAwareFiles.length > 0
@@ -64,14 +67,14 @@ export function createWorkspaceEslintConfig({
           extends: [...tseslint.configs.recommendedTypeChecked],
           languageOptions: {
             parserOptions: {
-              projectService: true
-            }
+              projectService: true,
+            },
           },
           rules: {
             '@typescript-eslint/no-floating-promises': 'error',
-            '@typescript-eslint/no-misused-promises': 'error'
-          }
+            '@typescript-eslint/no-misused-promises': 'error',
+          },
         }
-      : null
+      : null,
   ].filter(Boolean);
 }
