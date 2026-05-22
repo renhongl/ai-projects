@@ -21,12 +21,14 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.0.1",
+    "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^9.0.0",
     "eslint": "^9.0.0",
     "globals": "^15.0.0",
     "husky": "^8.0.0",
-    "typescript": "^5.6.3",
     "lint-staged": "^17.0.5",
+    "typescript": "^5.6.3",
     "typescript-eslint": "^8.0.0"
   },
   "lint-staged": {
