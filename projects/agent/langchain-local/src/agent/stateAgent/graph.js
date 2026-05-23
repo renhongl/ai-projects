@@ -15,11 +15,24 @@ import {
 import { AgentState } from './state.js';
 import { updateMemory } from './memory.js';
 
+function getCurrentTurnMessages(messages = []) {
+  const latestUserIndex = [...messages]
+    .map((message) => message.role)
+    .lastIndexOf('user');
+
+  if (latestUserIndex === -1) {
+    return [];
+  }
+
+  return messages.slice(latestUserIndex);
+}
+
 async function streamLlmNode(state) {
   if (!state.memory) {
     state.memory = {};
   }
   const newMemory = updateMemory(state.memory, state.messages);
+  const currentTurnMessages = getCurrentTurnMessages(state.messages);
   const memoryText = `
   用户信息：
   - 姓名：${newMemory.userName || '未知'}
@@ -33,14 +46,7 @@ async function streamLlmNode(state) {
         ${memoryText}
       `,
     },
-    {
-      role: 'system',
-      content: `1. 你在解析tool时，只使用最新一条用户的消息解析，不要对历史消息解析tool，每次最多返回一个tool。\n
-                2. 将摄像头控制的命令相关的历史消息忽略，只有最新的用户消息是摄像头控制才执行对应的tool。\n
-                3. 每次回答只回答最新的问题，或者根据最新的问题调用工具，不要在每个消息里都包含历史消息的信息。更不要每个消息都去执行历史消息对应的工具。
-      `,
-    },
-    ...state.messages,
+    ...currentTurnMessages,
   ];
   const llmWithTools = llm.bindTools([
     weatherTool,
@@ -90,11 +96,10 @@ async function toolNode(state) {
       tool_call_id: call.id,
     });
   }
-  const newMemory = updateMemory(state.memory, state.messages);
 
   return {
     messages: [...state.messages, ...results],
-    memory: newMemory,
+    memory: state.memory,
   };
 }
 

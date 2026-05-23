@@ -26,6 +26,7 @@ export function createWorkspaceEslintConfig({
         sourceType: 'module',
       },
       rules: {
+        'no-undef': 'warn',
         'no-console': ['warn', { allow: ['warn'] }],
       },
     },
@@ -37,6 +38,7 @@ export function createWorkspaceEslintConfig({
         sourceType: 'module',
       },
       rules: {
+        'no-undef': 'warn',
         'no-console': ['warn', { allow: ['warn'] }],
         '@typescript-eslint/consistent-type-imports': 'error',
         '@typescript-eslint/no-unused-vars': [

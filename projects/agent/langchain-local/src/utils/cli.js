@@ -1,6 +1,6 @@
-import readline from "node:readline";
+import readline from 'node:readline';
 // import { agent } from "../agent/weatherAgent.js";
-import { AgentState } from "../agent/stateAgent/state.js";
+import { createInitialAgentState } from '../agent/stateAgent/state.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -8,8 +8,8 @@ const rl = readline.createInterface({
 });
 
 export function cli(agent) {
-  rl.question("请输入问题：", async (input) => {
-    if (input === "exit") {
+  rl.question('请输入问题：', async (input) => {
+    if (input === 'exit') {
       rl.close();
       return;
     }
@@ -17,7 +17,7 @@ export function cli(agent) {
     const result = await agent.invoke({
       messages: [
         {
-          role: "user",
+          role: 'user',
           content: input,
         },
       ],
@@ -25,21 +25,21 @@ export function cli(agent) {
 
     const lastMessage = result.messages?.[result.messages.length - 1];
 
-    console.log("\n🤖 AI:", lastMessage?.content ?? result, "\n");
+    console.log('\n🤖 AI:', lastMessage?.content ?? result, '\n');
 
     cli(agent); // 继续循环输入
   });
 }
 
-export function stateCli(agent, initState = AgentState) {
-  rl.question("请输入问题：", async (input) => {
-    if (input === "exit") {
+export function stateCli(agent, initState = createInitialAgentState()) {
+  rl.question('请输入问题：', async (input) => {
+    if (input === 'exit') {
       rl.close();
       return;
     }
 
     initState.messages.push({
-      role: "user",
+      role: 'user',
       content: input,
     });
 
@@ -49,7 +49,7 @@ export function stateCli(agent, initState = AgentState) {
 
     initState.messages = result.messages;
 
-    console.log("\n🤖 AI:", lastMessage?.content ?? result, "\n");
+    console.log('\n🤖 AI:', lastMessage?.content ?? result, '\n');
 
     stateCli(agent, initState); // 继续循环输入
   });
@@ -63,14 +63,14 @@ export function plannerCli(agent, initialState = {}) {
   const state = cloneState(initialState);
 
   async function loop() {
-    rl.question("Input: ", async (input) => {
-      if (input === "exit") {
+    rl.question('Input: ', async (input) => {
+      if (input === 'exit') {
         rl.close();
         return;
       }
 
       state.messages.push({
-        role: "user",
+        role: 'user',
         content: input,
       });
 
@@ -80,25 +80,25 @@ export function plannerCli(agent, initialState = {}) {
 
         state.messages = result.messages ?? state.messages;
 
-        if ("memory" in result) {
+        if ('memory' in result) {
           state.memory = result.memory;
         }
 
-        if ("plan" in result) {
+        if ('plan' in result) {
           state.plan = result.plan;
         }
 
-        if ("currentStep" in result) {
+        if ('currentStep' in result) {
           state.currentStep = result.currentStep;
         }
 
-        if ("stepResults" in result) {
+        if ('stepResults' in result) {
           state.stepResults = result.stepResults;
         }
 
-        console.log("\nAI:", lastMessage?.content ?? result, "\n");
+        console.log('\nAI:', lastMessage?.content ?? result, '\n');
       } catch (error) {
-        console.error("\nAgent error:", error, "\n");
+        console.error('\nAgent error:', error, '\n');
       }
 
       loop();
