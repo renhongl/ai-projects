@@ -11,6 +11,7 @@ import {
   calculatorTool,
   flightSearchTool,
   cameraControlTool,
+  profileTool,
 } from '../../tools/index.js';
 import { AgentState } from './state.js';
 import { updateMemory } from './memory.js';
@@ -43,7 +44,8 @@ async function streamLlmNode(state) {
       role: 'system',
       content: `
         你是一个带记忆的助手。
-        ${memoryText}
+        ${memoryText}。\n
+        如果用户问题涉及人员相关，可以先使用profile工具查询相关信息。
       `,
     },
     ...currentTurnMessages,
@@ -53,6 +55,7 @@ async function streamLlmNode(state) {
     calculatorTool,
     flightSearchTool,
     cameraControlTool,
+    profileTool,
   ]);
   const stream = await llmWithTools.stream(messages);
   let finalMessage;
@@ -73,14 +76,14 @@ async function streamLlmNode(state) {
   };
 }
 
-const tools = {
-  get_weather: weatherTool,
-  calculator: calculatorTool,
-  search_flights: flightSearchTool,
-  control_camera: cameraControlTool,
-};
-
 async function toolNode(state) {
+  const tools = {
+    [weatherTool.name]: weatherTool,
+    [calculatorTool.name]: calculatorTool,
+    [flightSearchTool.name]: flightSearchTool,
+    [cameraControlTool.name]: cameraControlTool,
+    [profileTool.name]: profileTool,
+  };
   const lastMessage = state.messages[state.messages.length - 1];
   const toolCalls = lastMessage.tool_calls || [];
   const results = [];
