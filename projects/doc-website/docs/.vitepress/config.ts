@@ -57,7 +57,7 @@ export default defineConfig({
           text: 'Engineering',
           items: [
             { text: 'Index🟢', link: '/engineering/' },
-            { text: '00 Overview Index', link: '/engineering/00-index' },
+            { text: '00 Overview Index🟢', link: '/engineering/00-index' },
             {
               text: '01 Engineering Overview🟢',
               link: '/engineering/01-overview',
@@ -83,9 +83,9 @@ export default defineConfig({
             { text: '11 Commit Rules🟢', link: '/engineering/11-commit-rules' },
             { text: '12 Testing', link: '/engineering/12-testing' },
             { text: '13 CI-CD', link: '/engineering/13-ci-cd' },
-            { text: '14 Multi Env', link: '/engineering/14-multi-env' },
-            { text: '15 Feature Flag', link: '/engineering/15-feature-flag' },
-            { text: '16 Monorepo', link: '/engineering/16-monorepo' },
+            { text: '14 Multi Env🟢', link: '/engineering/14-multi-env' },
+            { text: '15 Feature Flag🟢', link: '/engineering/15-feature-flag' },
+            { text: '16 Monorepo🟢', link: '/engineering/16-monorepo' },
             {
               text: '17 Team Governance',
               link: '/engineering/17-team-governance',

@@ -1,6 +1,7 @@
 # Monorepo 实战复盘
 
 ## 结论
+
 当前仓库已经不是“把几个项目放一起”的弱 monorepo 了，而是进入了“有共享层、有统一入口、有基础治理”的可持续状态。
 
 这次补齐了第一优先级里最关键的 4 类共享包：
@@ -15,6 +16,7 @@
 ## 这次新增的共享包
 
 ### `packages/shared-utils`
+
 定位：沉淀跨 Node 项目都能复用的轻量工具。
 
 当前提供了这些能力：
@@ -36,6 +38,7 @@
 - 先从“真的重复”开始抽，不做过度封装
 
 ### `packages/eslint-config`
+
 定位：把仓库级 ESLint 规则抽成共享配置，而不是把规则永远堆在根目录。
 
 当前提供：
@@ -57,6 +60,7 @@
 这一步很重要，因为它代表规则已经从“文件”升级为“能力”。
 
 ### `packages/tsconfig`
+
 定位：统一 TypeScript 项目的编译基线。
 
 当前提供：
@@ -77,6 +81,7 @@
 - 新项目初始化更快
 
 ### `packages/node-sdk`
+
 定位：沉淀 Node 服务访问 AI 能力时的统一 SDK 层。
 
 当前提供：
@@ -304,3 +309,151 @@ pnpm workspace:doctor
 ## 一句话总结
 
 现在这个仓库已经有了 monorepo 最关键的第一层共享能力。后续学习和演进的重点，不再是“要不要 monorepo”，而是“如何持续把重复能力沉淀到共享层，并让整个仓库通过统一入口稳定运行”。
+
+看来你已经把文档翻到了 [Monorepo 实战复盘](https://renhongl.github.io/ai-projects/engineering/16-monorepo) 这一页。
+
+Monorepo（单仓多包）不仅仅是“把几个项目放进同一个文件夹”，它的核心价值在于**代码共享、依赖收敛、规范一致**，从而让团队像治理“一个大系统”一样去治理所有子项目。
+
+结合你当前仓库的工程结构，我为你定制了一份进阶式的 **Monorepo 实战与落地教程**。
+
+---
+
+## 1. 基础篇：看懂单仓的“骨架”
+
+一个成熟的现代 Monorepo 仓库，其目录结构通常分为三层：**应用层、共享能力层、治理工具层**。
+
+```text
+ai-projects/
+├─ projects/              # 【应用层】真正运行的业务项目、站点、服务
+│  ├─ ai/
+│  │  ├─ nest-simple-agent
+│  │  └─ node-cli-agent
+│  └─ doc-website         # 文档站
+├─ packages/              # 【共享能力层】可复用的 npm 包、配置或 SDK
+│  ├─ eslint-config       # 统一的代码风格配置
+│  ├─ tsconfig            # 统一的 TS 编译基线
+│  ├─ shared-utils        # 无框架绑定的纯 JS/TS 工具函数
+│  └─ node-sdk            # 统一的 AI 接口调用 SDK
+├─ tooling/               # 【治理工具层】仓库健康检查工具
+│  └─ workspace-doctor
+├─ package.json           # 根目录全局配置
+└─ pnpm-workspace.yaml    # pnpm 工作区定义
+
+```
+
+---
+
+## 2. 配置篇：如何连接整个仓库？
+
+在 Monorepo 中，我们通常使用 `pnpm` 作为包管理工具（因为它对 Workspace 的支持最轻量且高效）。
+
+### 步骤一：定义工作区（pnpm-workspace.yaml）
+
+在根目录下创建该文件，告诉 pnpm 哪些目录是它的子包：
+
+```yaml
+packages:
+  - 'projects/**'
+  - 'packages/**'
+  - 'tooling/**'
+```
+
+### 步骤二：统一根脚本契约（根 package.json）
+
+在根目录的 `package.json` 中配置聚合命令。**不要让开发者进到子目录去打包或测试**，全部从根目录触发：
+
+```json
+{
+  "name": "ai-projects-root",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter=vite-learning-lab dev",
+    "build": "pnpm -r build", // -r 代表 recursive（递归），一行命令打包所有包
+    "lint": "pnpm -r lint", // 递归校验所有包的代码规范
+    "typecheck": "pnpm -r typecheck" // 递归做 TS 类型检查
+  }
+}
+```
+
+---
+
+## 3. 落地篇：如何玩转“共享包”
+
+学会“创建共享包”只是入门，让子项目正确“消费共享包”才是 Monorepo 的精髓。
+
+### 场景一：共享纯工具函数（packages/shared-utils）
+
+当你有跨项目的轻量工具（如 `parseEnvFile`, `toBoolean`, `toNumber`）时，丢进这里：
+
+1. **定义：** 在 `packages/shared-utils/package.json` 中：
+
+```json
+{
+  "name": "@workspace/shared-utils",
+  "version": "1.0.0",
+  "main": "index.js"
+}
+```
+
+2. **消费：** 比如 `projects/ai/node-cli-agent` 想要使用它，在子项目根目录下运行：
+
+```bash
+pnpm add @workspace/shared-utils --workspace
+
+```
+
+此时子项目的 `package.json` 会出现：`"@workspace/shared-utils": "workspace:*"`。接着直接在代码中通过 `import` 导入即可，修改 `shared-utils` 时，子项目会实时生效。
+
+### 场景二：统一 TypeScript 基线（packages/tsconfig）
+
+别让每个子项目都复制粘贴一大堆 `compilerOptions`。
+
+1. **定义：** 在 `packages/tsconfig/vite-app.json` 中写好 Vite 项目通用的 TS 配置。
+2. **消费：** 在 `projects/engineering/vite-learning-lab/tsconfig.json` 中直接继承它：
+
+```json
+{
+  "extends": "@workspace/tsconfig/vite-app.json",
+  "include": ["src/**/*"]
+}
+```
+
+---
+
+## 4. 治理篇：如何防止仓库沦为垃圾堆？
+
+当仓库里的项目越来越多，单靠口头约定是不行的，必须**把规范写进工具里**。
+
+正如你项目里提供的 [tooling/workspace-doctor](https://renhongl.github.io/ai-projects/engineering/16-monorepo#toolingworkspace-doctor) 方案，你可以写一个轻量的 Node 脚本来自动化治理仓库：
+
+```javascript
+// tooling/workspace-doctor/index.js
+// 示例：检查是否所有共享包都使用了规范的名称，或者是否误提交了 node_modules
+import fs from 'fs';
+import glob from 'glob';
+
+const packages = glob.sync('packages/*/package.json');
+packages.forEach((pkgPath) => {
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+  if (!pkg.name.startsWith('@workspace/')) {
+    console.error(`❌ 错误: ${pkgPath} 中的包名必须以 @workspace/ 开头!`);
+    process.exit(1);
+  }
+});
+console.log('✅ Monorepo 依赖与命名规范检查通过！');
+```
+
+把这个工具配置到 Git 的 `pre-commit` 钩子（配合 Husky）或者 CI 流程中，任何人提交不合规的代码都会被直接卡住。
+
+---
+
+## 5. 动手实操：你的第一个 Monorepo 练习题
+
+既然仓库架构已经搭好，建议你亲自动手做个实验来完全吃透它：
+
+1. **新建包：** 在 `packages/` 下新建一个 `http-utils` 文件夹，并初始化 `package.json`。
+2. **写代码：** 封装一个轻量的 Fetch 请求工具（带上统一的错误处理）。
+3. **接入消费：** 将它同时引入到 `node-cli-agent` 和 `vite-learning-lab` 中，替换掉它们各自原生的请求逻辑。
+4. **跑通流：** 在根目录运行 `pnpm build` 和 `pnpm lint`，确保整个工作区构建自洽。
+
+你接下来打算把哪一部分业务逻辑（比如某个通用组件，或者统一的错误处理）尝试抽离成新的共享包？我们可以一起聊聊具体的抽离设计。
